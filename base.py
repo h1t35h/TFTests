@@ -2,10 +2,14 @@ import tensorflow as tf
 import boto3
 import pandas as pd
 
+
 def getFileLists(bucket: str, prefix: str):
-        s3 = boto3.resource('s3')
-        bucket = s3.Bucket(bucket)
-        return list(s3object.key for s3object in bucket.objects.filter(Prefix=prefix))
+    """
+        Return all the files in s3 directory. In S3 Url format.
+    """
+    s3 = boto3.resource('s3')
+    s3bucket = s3.Bucket(bucket)
+    return list(f"s3://{bucket}/{s3object.key}" for s3object in s3bucket.objects.filter(Prefix=prefix))
 
 
 def pandas_to_dataset(pandas_ds) -> tf.data.Dataset:
